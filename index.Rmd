@@ -12,3 +12,15 @@ output:
 ## Project thoughts
 
 I am interested in exploring data related to the 2024 election results and the different demographics that voted for each political candidate. 
+
+My research question is: Did race and education level influence voting patterns in the 2024 U.S. presidential election?
+
+Hypothesis: Non-white voters and college-educated voters were more likely to vote Democrat (Kamala Harris) in 2024 than white voters and voters without a college degree. This theory is backed by history that has shown that non-white and college-educated voters tend to align themselves with the Democratic party due to policy preferences on civil rights and inclusiveness. Additionally, political polarization has taught us that if one group votes a certain way, the other group will vote the opposite way. Therefore, if non-white voters vote Democrat, white votes will vote Republican.
+
+Explanatory Variables: 
+Race: measured by the study results asking if people are white, Black, Hispanic, Asian, etc.
+Education: measured by the study results asking if people have a postgraduate degree, bachelor's degree, some college, or no college degree
+
+Outcome Variable of Interest: vote choice in 2024, measured by the study results if people voted for a Democratic candidate, Republican candidate, third party candidate, or if they did not vote
+
+My hypothesis would be supported if a higher proportion of non-white voters voted Democrat than Republican, and if a higher proportion of college-educated voters voted Democrat. My hypothesis would be disproved if the a higher proportion of non-white voters voted Republican and if a higher proportion of college-educated voters voted Republican.
