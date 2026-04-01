@@ -12,3 +12,15 @@ output:
 ## Project thoughts
 
 I'm interested in exploring data related to how a state's partisan competitiveness influences its distribution of electoral votes. I will use data from the 2020 election (Donald Trump vs. Joe Biden), as this data is recent enough to be relevant but also not too recent that there isn't data on it. 
+
+UPDATE: Based on the dataset I have found, I have changed my initial project thoughts. Instead of tying in the electoral votes, I will be researching how partisan competitiveness affects the vote margins for each state. 
+
+```{r}
+library(tidyverse)
+electoral <- read_csv("data/electoral_data.csv", show_col_types = FALSE)
+electoral
+```
+
+## Research Question, Hypothesis, Explanatory Variables, Etc. 
+
+My research question is: How does a state's partisan competitiveness relate to how close the vote is in that state? My hypothesis is that states that are more competitive (Battleground States or states that are "toss-ups") will have smaller popular vote margins, and states that are considered "safe" will have larger popular vote margins. Usually, when voters are more evenly divided between different political parties, the election outcomes will be closer and vice versa. However, this isn't always the case. Some states are labeled as competitive before the election, but the results prove that there is a large margin in between candidates. The explanatory variable is partisan competitiveness (measured by the number of votes for each candidate) and outcome variable of interest is the popular vote margin (measured by the difference in vote share between each candidate). My hypothesis would be proven correct if the more competitive states showed a smaller vote margin. My hypothesis would be disproven if there was no clear correlation between competitiveness ratings and vote margin, or if competitive states showed large margins and safe states showed close outcomes. To determine if a state is competitive or safe, I will do research on what the states were predicted to be going into the 2020 election, and I will compare that research with the voting outcomes in the chart. 
