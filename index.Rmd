@@ -11,4 +11,4 @@ output:
 
 ## Project thoughts
 
-I am interested in exploring data related to how a state's partisan competitiveness influences its distribution of electoral votes. I will use data from the 2020 election (Donald Trump vs. Joe Biden), as this data is recent enough to be relevant but also not too recent that there isn't data on it. 
+I'm interested in exploring data related to how a state's partisan competitiveness influences its distribution of electoral votes. I will use data from the 2020 election (Donald Trump vs. Joe Biden), as this data is recent enough to be relevant but also not too recent that there isn't data on it. 
