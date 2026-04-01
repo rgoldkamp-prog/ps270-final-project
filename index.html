@@ -116,7 +116,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["data/electoral_data.csv","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.30/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["data/electoral_data.csv","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-3-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.30/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1575,7 +1575,60 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <h2 id="research-question-hypothesis-explanatory-variables-etc.">Research Question, Hypothesis, Explanatory Variables, Etc.</h2>
 <p>My research question is: How does a state’s partisan competitiveness relate to how close the vote is in that state? My hypothesis is that states that are more competitive (Battleground States or states that are “toss-ups”) will have smaller popular vote margins, and states that are considered “safe” will have larger popular vote margins. Usually, when voters are more evenly divided between different political parties, the election outcomes will be closer and vice versa. However, this isn’t always the case. Some states are labeled as competitive before the election, but the results prove that there is a large margin in between candidates. The explanatory variable is partisan competitiveness (measured by the number of votes for each candidate) and outcome variable of interest is the popular vote margin (measured by the difference in vote share between each candidate). My hypothesis would be proven correct if the more competitive states showed a smaller vote margin. My hypothesis would be disproven if there was no clear correlation between competitiveness ratings and vote margin, or if competitive states showed large margins and safe states showed close outcomes. To determine if a state is competitive or safe, I will do research on what the states were predicted to be going into the 2020 election, and I will compare that research with the voting outcomes in the chart.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<h2 id="data-cleaning-measuring-how-close-the-election-was-in-each-state-and-classifying-states-that-were-close-races-as-battleground-states-and-classifying-states-that-were-not-close-as-non-battleground-states-also-creating-a-new-vote-margin-variable-to-see-how-close-each-race-was">Data Cleaning: Measuring how close the election was in each state and classifying states that were close races as Battleground States and classifying states that were not close as Non-Battleground States; also creating a new vote margin variable to see how close each race was</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span><span class='va'>electoral</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"data/electoral_data.csv"</span>, show_col_types <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span><span class='va'>battleground_states</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span> <span class='st'>"Arizona"</span>, <span class='st'>"Florida"</span>, <span class='st'>"Georgia"</span>, <span class='st'>"Iowa"</span>, <span class='st'>"Michigan"</span>,</span>
+<span>  <span class='st'>"Minnesota"</span>, <span class='st'>"Nevada"</span>, <span class='st'>"New Hampshire"</span>, <span class='st'>"North Carolina"</span>,</span>
+<span>  <span class='st'>"Ohio"</span>, <span class='st'>"Pennsylvania"</span>, <span class='st'>"Texas"</span>, <span class='st'>"Virginia"</span>, <span class='st'>"Wisconsin"</span>, <span class='st'>"Maine"</span></span>
+<span><span class='op'>)</span></span>
+<span><span class='va'>electoral_clean</span> <span class='op'>&lt;-</span> <span class='va'>electoral</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span></span>
+<span>    dem_percent <span class='op'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_number.html'>parse_number</a></span><span class='op'>(</span><span class='va'>dem_percent</span><span class='op'>)</span>,</span>
+<span>    rep_percent <span class='op'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_number.html'>parse_number</a></span><span class='op'>(</span><span class='va'>rep_percent</span><span class='op'>)</span>,</span>
+<span>    vote_margin <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='va'>dem_percent</span> <span class='op'>-</span> <span class='va'>rep_percent</span><span class='op'>)</span>,</span>
+<span>    competitiveness <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>state</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='va'>battleground_states</span>, </span>
+<span>                              <span class='st'>"Battleground State"</span>, <span class='st'>"Non-Battleground State"</span><span class='op'>)</span></span>
+<span>  <span class='op'>)</span></span>
+<span><span class='va'>electoral_clean</span></span></code></pre>
+</div>
+<pre><code># A tibble: 61 × 24
+   state      called final dem_votes rep_votes other_votes dem_percent
+   &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
+ 1 U.S. Total D      Yes    81282916  74223369     2891441        51.3
+ 2 15 Key Ba… &lt;NA&gt;   &lt;NA&gt;   31908248  33002287      950354        48.4
+ 3 Non-Battl… &lt;NA&gt;   &lt;NA&gt;   49374668  41221082     1941087        53.4
+ 4 15 Key Ba… &lt;NA&gt;   &lt;NA&gt;         NA        NA          NA        NA  
+ 5 Arizona    D      Yes     1672143   1661686       53497        49.4
+ 6 Florida    R      Yes     5297045   5668731      101680        47.9
+ 7 Georgia    D      Yes     2473633   2461854       62229        49.5
+ 8 Iowa       R      Yes      759061    897672       34138        44.9
+ 9 Maine 2nd… R      Yes      168696    196692       10961        44.8
+10 Michigan   D      Yes     2804040   2649852       85410        50.6
+# ℹ 51 more rows
+# ℹ 17 more variables: rep_percent &lt;dbl&gt;, other_percent &lt;chr&gt;,
+#   dem_this_margin &lt;chr&gt;, margin_shift &lt;chr&gt;, vote_change &lt;chr&gt;,
+#   stateid &lt;chr&gt;, EV &lt;dbl&gt;, X &lt;dbl&gt;, Y &lt;dbl&gt;, State_num &lt;dbl&gt;,
+#   Center_X &lt;dbl&gt;, Center_Y &lt;dbl&gt;, ...20 &lt;lgl&gt;, `2016 Margin` &lt;dbl&gt;,
+#   `Total 2016 Votes` &lt;dbl&gt;, vote_margin &lt;dbl&gt;,
+#   competitiveness &lt;chr&gt;</code></pre>
+</div>
+<h2 id="attempting-to-make-a-graph-for-data-visualization">Attempting to Make a Graph for Data Visualization</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>electoral_clean</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span> <span class='op'>(</span>x<span class='op'>=</span> <span class='va'>competitiveness</span>, y <span class='op'>=</span> <span class='va'>vote_margin</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_boxplot.html'>geom_boxplot</a></span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='fl'>0.8</span>, width <span class='op'>=</span> <span class='fl'>0.6</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span></span>
+<span>    title <span class='op'>=</span> <span class='st'>"Vote Margins in Battleground vs. Non-Battleground States"</span>,</span>
+<span>    x <span class='op'>=</span> <span class='st'>"State Competitiveness"</span>,</span>
+<span>    y <span class='op'>=</span> <span class='st'>"Popular Vote Margin (percentage points)"</span></span>
+<span>  <span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="index_files/figure-html5/unnamed-chunk-3-1.png" alt="" width="624" /></p>
+</div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

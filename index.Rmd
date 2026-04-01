@@ -24,3 +24,38 @@ electoral
 ## Research Question, Hypothesis, Explanatory Variables, Etc. 
 
 My research question is: How does a state's partisan competitiveness relate to how close the vote is in that state? My hypothesis is that states that are more competitive (Battleground States or states that are "toss-ups") will have smaller popular vote margins, and states that are considered "safe" will have larger popular vote margins. Usually, when voters are more evenly divided between different political parties, the election outcomes will be closer and vice versa. However, this isn't always the case. Some states are labeled as competitive before the election, but the results prove that there is a large margin in between candidates. The explanatory variable is partisan competitiveness (measured by the number of votes for each candidate) and outcome variable of interest is the popular vote margin (measured by the difference in vote share between each candidate). My hypothesis would be proven correct if the more competitive states showed a smaller vote margin. My hypothesis would be disproven if there was no clear correlation between competitiveness ratings and vote margin, or if competitive states showed large margins and safe states showed close outcomes. To determine if a state is competitive or safe, I will do research on what the states were predicted to be going into the 2020 election, and I will compare that research with the voting outcomes in the chart. 
+
+## Data Cleaning: Measuring how close the election was in each state and classifying states that were close races as Battleground States and classifying states that were not close as Non-Battleground States; also creating a new vote margin variable to see how close each race was 
+
+```{r}
+library(tidyverse)
+electoral <- read_csv("data/electoral_data.csv", show_col_types = FALSE)
+battleground_states <- c( "Arizona", "Florida", "Georgia", "Iowa", "Michigan",
+  "Minnesota", "Nevada", "New Hampshire", "North Carolina",
+  "Ohio", "Pennsylvania", "Texas", "Virginia", "Wisconsin", "Maine"
+)
+electoral_clean <- electoral |>
+  mutate(
+    dem_percent = parse_number(dem_percent),
+    rep_percent = parse_number(rep_percent),
+    vote_margin = abs(dem_percent - rep_percent),
+    competitiveness = if_else(state %in% battleground_states, 
+                              "Battleground State", "Non-Battleground State")
+  )
+electoral_clean
+```
+
+## Attempting to Make a Graph for Data Visualization 
+
+```{r}
+ggplot(electoral_clean, aes (x= competitiveness, y = vote_margin)) + 
+  geom_boxplot(alpha = 0.8, width = 0.6) +
+  labs(
+    title = "Vote Margins in Battleground vs. Non-Battleground States",
+    x = "State Competitiveness",
+    y = "Popular Vote Margin (percentage points)"
+  )
+```
+
+
+
