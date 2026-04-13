@@ -57,5 +57,52 @@ ggplot(electoral_clean, aes (x= competitiveness, y = vote_margin)) +
   )
 ```
 
+## Visualization and Analysis to Answer Research Question (Checkpoint 4)
+
+```{r}
+library(tidyverse)
+
+ggplot(electoral_clean, aes(x = competitiveness, y = vote_margin)) +
+  geom_point(alpha = 0.7) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    x = "Partisan Competitiveness",
+    y = "Vote Margin (%)",
+    title = "Relationship Between State Competitiveness and Election Closeness"
+  )
+electoral_clean
+```
+
+```{r}
+library(tidyverse)
+library(knitr)
+
+electoral_clean <- electoral_clean |>
+  mutate(
+    comp_group = if_else(vote_margin < 5, "Highly Competitive", "Less Competitive")
+  )
+
+summary_table <- electoral_clean |>
+  group_by(comp_group) |>
+  summarize(
+    avg_margin = mean(vote_margin, na.rm = TRUE),
+    sd_margin = sd(vote_margin, na.rm = TRUE),
+    n_states = n ()
+  )
+
+kable(
+  summary_table,
+  digits = 2,
+  col.names = c("Competitiveness Group", "Average Vote Margin", "SD of Vote Margin", "Number of States")
+)
+```
+
+The results show a strong relationship between a state's partisan competitiveness and how close the vote was in that state. Highly competitive states have much smaller vote margins (about 1.82 percentage points), which is proof of very close elections. In contrast, less competitive states have much larger vote margins (about 21.61 percentage points). Elections in these states are much less close. 
+
+This is reinforced in the scatter plot- competitive (battleground) states are clustered by the 0 vote margin while non-competitive states (non-battleground states) are spread out and have larger margins. 
+
+The results show that higher partisan competitiveness is strongly associated with closer election results!
+
+
 
 
