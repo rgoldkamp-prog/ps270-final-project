@@ -116,7 +116,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["data/electoral_data.csv","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-3-1.png","index_files/figure-html5/unnamed-chunk-4-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.30/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["data/electoral_data.csv","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-3-1.png","index_files/figure-html5/unnamed-chunk-4-1.png","index_files/figure-html5/unnamed-chunk-6-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.30/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1544,9 +1544,14 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 
 <div class="d-article">
-<h2 id="project-thoughts">Project thoughts</h2>
-<p>I’m interested in exploring data related to how a state’s partisan competitiveness influences its distribution of electoral votes. I will use data from the 2020 election (Donald Trump vs. Joe Biden), as this data is recent enough to be relevant but also not too recent that there isn’t data on it.</p>
-<p>UPDATE: Based on the dataset I have found, I have changed my initial project thoughts. Instead of tying in the electoral votes, I will be researching how partisan competitiveness affects the vote margins for each state.</p>
+<h2 id="introduction">Introduction</h2>
+<p>My project shows the relationship between a state’s partisan competitiveness and how close the election outcomes are in that state. My research question is: How does a state’s partisan competitiveness relate to how close the vote is in that state? My hypothesis is that states that are more competitive (Battleground States or states that are “toss-ups”) will have smaller popular vote margins, and states that are considered “safe” will have larger popular vote margins. Usually, when voters are more evenly divided between different political parties, the election outcomes will be closer and vice versa. However, this isn’t always the case. Some states are labeled as competitive before the election, but the results prove that there is a large margin in between candidates.</p>
+<p>This data topic is interesting and relevant because it helps explain how political competition varies across states, and how this can impact election outcomes. In today’s current state of polarization, it’s interesting to see how competitiveness relates to vote margins.</p>
+<h2 id="data">Data</h2>
+<p>The data that I used for my analysis comes from the presidential election results from the 2024 election. The key dependent variable (outcome) is the vote margin. This is measured as the difference in vote share between the Democratic and Republican candidates in each individual state for the 2024 presidential election. We can derive this variable from the official election results (instead of a survey or a statistical model). Smaller vote margins are indicative of closer elections, and larger vote margins are indicative of elections that were not very competitive. The key independent variable (predictor) is partisan competitiveness. This is shown by classifying states into two different categories: battleground states (very competitive) and non-battleground states (less competitive). We will be able to tell if a state is a battleground state or a non-battleground state based on the vote margin (states with a vote margin of less than 5 percentage points are considered very competitive and states with a margin larger than 5 are considered less competitive). We can derive this variable from research based on the official election results, as well.</p>
+<p>The explanatory variable is partisan competitiveness (measured by the number of votes for each candidate) and outcome variable of interest is the vote margin (measured by the difference in vote share between each candidate).</p>
+<p>My hypothesis would be proven correct if the more competitive states showed a smaller vote margin. My hypothesis would be disproven if there was no clear correlation between competitiveness ratings and vote margin, or if competitive states showed large margins and safe states showed close outcomes. To determine if a state is competitive or safe, I will do research on what the states were predicted to be going into the 2020 election, and I will compare that research with the voting outcomes in the chart.</p>
+<p>Below, I have loaded the data, cleaned it, and produced a plot that summarizes the vote margin!</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
@@ -1573,9 +1578,6 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 #   Center_X &lt;dbl&gt;, Center_Y &lt;dbl&gt;, ...20 &lt;lgl&gt;, `2016 Margin` &lt;dbl&gt;,
 #   `Total 2016 Votes` &lt;dbl&gt;</code></pre>
 </div>
-<h2 id="research-question-hypothesis-explanatory-variables-etc.">Research Question, Hypothesis, Explanatory Variables, Etc.</h2>
-<p>My research question is: How does a state’s partisan competitiveness relate to how close the vote is in that state? My hypothesis is that states that are more competitive (Battleground States or states that are “toss-ups”) will have smaller popular vote margins, and states that are considered “safe” will have larger popular vote margins. Usually, when voters are more evenly divided between different political parties, the election outcomes will be closer and vice versa. However, this isn’t always the case. Some states are labeled as competitive before the election, but the results prove that there is a large margin in between candidates. The explanatory variable is partisan competitiveness (measured by the number of votes for each candidate) and outcome variable of interest is the popular vote margin (measured by the difference in vote share between each candidate). My hypothesis would be proven correct if the more competitive states showed a smaller vote margin. My hypothesis would be disproven if there was no clear correlation between competitiveness ratings and vote margin, or if competitive states showed large margins and safe states showed close outcomes. To determine if a state is competitive or safe, I will do research on what the states were predicted to be going into the 2020 election, and I will compare that research with the voting outcomes in the chart.</p>
-<h2 id="data-cleaning-measuring-how-close-the-election-was-in-each-state-and-classifying-states-that-were-close-races-as-battleground-states-and-classifying-states-that-were-not-close-as-non-battleground-states-also-creating-a-new-vote-margin-variable-to-see-how-close-each-race-was">Data Cleaning: Measuring how close the election was in each state and classifying states that were close races as Battleground States and classifying states that were not close as Non-Battleground States; also creating a new vote margin variable to see how close each race was</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
@@ -1615,74 +1617,110 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 #   `Total 2016 Votes` &lt;dbl&gt;, vote_margin &lt;dbl&gt;,
 #   competitiveness &lt;chr&gt;</code></pre>
 </div>
-<h2 id="attempting-to-make-a-graph-for-data-visualization">Attempting to Make a Graph for Data Visualization</h2>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>electoral_clean</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span> <span class='op'>(</span>x<span class='op'>=</span> <span class='va'>competitiveness</span>, y <span class='op'>=</span> <span class='va'>vote_margin</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_boxplot.html'>geom_boxplot</a></span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='fl'>0.8</span>, width <span class='op'>=</span> <span class='fl'>0.6</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span></span>
-<span>    title <span class='op'>=</span> <span class='st'>"Vote Margins in Battleground vs. Non-Battleground States"</span>,</span>
-<span>    x <span class='op'>=</span> <span class='st'>"State Competitiveness"</span>,</span>
-<span>    y <span class='op'>=</span> <span class='st'>"Popular Vote Margin (percentage points)"</span></span>
-<span>  <span class='op'>)</span></span></code></pre>
-</div>
-<p><img src="index_files/figure-html5/unnamed-chunk-3-1.png" alt="" width="624" /></p>
-</div>
-<h2 id="visualization-and-analysis-to-answer-research-question-checkpoint-4">Visualization and Analysis to Answer Research Question (Checkpoint 4)</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
 <span></span>
-<span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>electoral_clean</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>competitiveness</span>, y <span class='op'>=</span> <span class='va'>vote_margin</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='fl'>0.7</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_smooth.html'>geom_smooth</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"lm"</span>, se <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>electoral_clean</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>vote_margin</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_histogram.html'>geom_histogram</a></span><span class='op'>(</span>binwidth <span class='op'>=</span> <span class='fl'>5</span>, fill <span class='op'>=</span> <span class='st'>"steelblue"</span>, color <span class='op'>=</span> <span class='st'>"white"</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span></span>
-<span>    x <span class='op'>=</span> <span class='st'>"Partisan Competitiveness"</span>,</span>
-<span>    y <span class='op'>=</span> <span class='st'>"Vote Margin (%)"</span>,</span>
-<span>    title <span class='op'>=</span> <span class='st'>"Relationship Between State Competitiveness and Election Closeness"</span></span>
+<span>    x <span class='op'>=</span> <span class='st'>"Vote Margin (%)"</span>,</span>
+<span>    y <span class='op'>=</span> <span class='st'>"Number of States"</span>,</span>
+<span>    title <span class='op'>=</span> <span class='st'>"Distribution of Vote Margins Across States (2024 Election)"</span></span>
 <span>  <span class='op'>)</span></span></code></pre>
 </div>
-<img src="index_files/figure-html5/unnamed-chunk-4-1.png" alt="" width="624" />
+<p><img src="index_files/figure-html5/unnamed-chunk-3-1.png" alt="" width="624" /></p>
+</div>
+<h2 id="results">Results</h2>
+<p>First, I made a boxplot to show the relationship between the state competitiveness and popular vote margin in each state.</p>
+<div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>electoral_clean</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>electoral_clean</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>competitiveness</span>, y <span class='op'>=</span> <span class='va'>vote_margin</span>, fill <span class='op'>=</span> <span class='va'>competitiveness</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_boxplot.html'>geom_boxplot</a></span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='fl'>0.7</span>, width <span class='op'>=</span> <span class='fl'>0.6</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"steelblue"</span>, <span class='st'>"orange"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span></span>
+<span>    title <span class='op'>=</span> <span class='st'>"Vote Margins by State Competitiveness"</span>,</span>
+<span>    subtitle <span class='op'>=</span> <span class='st'>"2024 Presidential Election"</span>,</span>
+<span>    x <span class='op'>=</span> <span class='st'>"State Competitiveness"</span>,</span>
+<span>    y <span class='op'>=</span> <span class='st'>"Vote Margin (%)"</span></span>
+<span>  <span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_minimal</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span></span>
+<span>    plot.title <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>14</span>, face <span class='op'>=</span> <span class='st'>"bold"</span><span class='op'>)</span>,</span>
+<span>    legend.position <span class='op'>=</span> <span class='st'>"none"</span></span>
+<span>  <span class='op'>)</span></span></code></pre>
 </div>
-<pre><code># A tibble: 61 × 24
-   state      called final dem_votes rep_votes other_votes dem_percent
-   &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
- 1 U.S. Total D      Yes    81282916  74223369     2891441        51.3
- 2 15 Key Ba… &lt;NA&gt;   &lt;NA&gt;   31908248  33002287      950354        48.4
- 3 Non-Battl… &lt;NA&gt;   &lt;NA&gt;   49374668  41221082     1941087        53.4
- 4 15 Key Ba… &lt;NA&gt;   &lt;NA&gt;         NA        NA          NA        NA  
- 5 Arizona    D      Yes     1672143   1661686       53497        49.4
- 6 Florida    R      Yes     5297045   5668731      101680        47.9
- 7 Georgia    D      Yes     2473633   2461854       62229        49.5
- 8 Iowa       R      Yes      759061    897672       34138        44.9
- 9 Maine 2nd… R      Yes      168696    196692       10961        44.8
-10 Michigan   D      Yes     2804040   2649852       85410        50.6
-# ℹ 51 more rows
-# ℹ 17 more variables: rep_percent &lt;dbl&gt;, other_percent &lt;chr&gt;,
-#   dem_this_margin &lt;chr&gt;, margin_shift &lt;chr&gt;, vote_change &lt;chr&gt;,
-#   stateid &lt;chr&gt;, EV &lt;dbl&gt;, X &lt;dbl&gt;, Y &lt;dbl&gt;, State_num &lt;dbl&gt;,
-#   Center_X &lt;dbl&gt;, Center_Y &lt;dbl&gt;, ...20 &lt;lgl&gt;, `2016 Margin` &lt;dbl&gt;,
-#   `Total 2016 Votes` &lt;dbl&gt;, vote_margin &lt;dbl&gt;,
-#   competitiveness &lt;chr&gt;</code></pre>
+<p><img src="index_files/figure-html5/unnamed-chunk-4-1.png" alt="" width="624" /></p>
 </div>
+<p>Next, I ran a regression to show the relationship between partisan competitiveness and vote margin.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://yihui.org/knitr/'>knitr</a></span><span class='op'>)</span></span>
+<span><span class='va'>electoral_clean</span> <span class='op'>&lt;-</span> <span class='va'>electoral_clean</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>competitiveness <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>competitiveness</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>vote_margin</span> <span class='op'>~</span> <span class='va'>competitiveness</span>, data <span class='op'>=</span> <span class='va'>electoral_clean</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>model</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>
+Call:
+lm(formula = vote_margin ~ competitiveness, data = electoral_clean)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-21.245  -6.695  -2.145   4.143  63.755 
+
+Coefficients:
+                                      Estimate Std. Error t value
+(Intercept)                              4.507      3.274   1.376
+competitivenessNon-Battleground State   18.439      3.792   4.863
+                                      Pr(&gt;|t|)    
+(Intercept)                              0.174    
+competitivenessNon-Battleground State 9.48e-06 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 12.68 on 57 degrees of freedom
+  (2 observations deleted due to missingness)
+Multiple R-squared:  0.2932,    Adjusted R-squared:  0.2808 
+F-statistic: 23.65 on 1 and 57 DF,  p-value: 9.478e-06</code></pre>
+</div>
+<p>Next, I made a scatter plot to show the relationship between partisan competitiveness and vote margin.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>electoral_clean</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>competitiveness</span>, y <span class='op'>=</span> <span class='va'>vote_margin</span>, color <span class='op'>=</span> <span class='va'>competitiveness</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_jitter.html'>geom_jitter</a></span><span class='op'>(</span>width <span class='op'>=</span> <span class='fl'>0.2</span>, alpha <span class='op'>=</span> <span class='fl'>0.7</span>, size <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'>+</span>  </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/stat_summary.html'>stat_summary</a></span><span class='op'>(</span>fun <span class='op'>=</span> <span class='va'>mean</span>, geom <span class='op'>=</span> <span class='st'>"point"</span>, size <span class='op'>=</span> <span class='fl'>4</span>, color <span class='op'>=</span> <span class='st'>"black"</span><span class='op'>)</span> <span class='op'>+</span>  </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_color_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"steelblue"</span>, <span class='st'>"orange"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span></span>
+<span>    title <span class='op'>=</span> <span class='st'>"Vote Margins by State Competitiveness"</span>,</span>
+<span>    subtitle <span class='op'>=</span> <span class='st'>"2024 Presidential Election"</span>,</span>
+<span>    x <span class='op'>=</span> <span class='st'>"State Competitiveness"</span>,</span>
+<span>    y <span class='op'>=</span> <span class='st'>"Vote Margin (%)"</span></span>
+<span>  <span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_minimal</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span></span>
+<span>    plot.title <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>14</span>, face <span class='op'>=</span> <span class='st'>"bold"</span><span class='op'>)</span>,</span>
+<span>    plot.subtitle <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>11</span><span class='op'>)</span>,</span>
+<span>    legend.position <span class='op'>=</span> <span class='st'>"none"</span></span>
+<span>  <span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="index_files/figure-html5/unnamed-chunk-6-1.png" alt="" width="624" /></p>
+</div>
+<p>Finally, I summarized the vote margins across states by their levels of partisan competitiveness in terms of percentage points and standard deviation.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
 <span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://yihui.org/knitr/'>knitr</a></span><span class='op'>)</span></span>
 <span></span>
-<span><span class='va'>electoral_clean</span> <span class='op'>&lt;-</span> <span class='va'>electoral_clean</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span></span>
-<span>    comp_group <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>vote_margin</span> <span class='op'>&lt;</span> <span class='fl'>5</span>, <span class='st'>"Highly Competitive"</span>, <span class='st'>"Less Competitive"</span><span class='op'>)</span></span>
-<span>  <span class='op'>)</span></span>
-<span></span>
 <span><span class='va'>summary_table</span> <span class='op'>&lt;-</span> <span class='va'>electoral_clean</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>comp_group</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>competitiveness</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span></span>
 <span>    avg_margin <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>vote_margin</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,</span>
 <span>    sd_margin <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/sd.html'>sd</a></span><span class='op'>(</span><span class='va'>vote_margin</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,</span>
-<span>    n_states <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/context.html'>n</a></span> <span class='op'>(</span><span class='op'>)</span></span>
+<span>    n_states <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/context.html'>n</a></span><span class='op'>(</span><span class='op'>)</span></span>
 <span>  <span class='op'>)</span></span>
 <span></span>
 <span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span></span>
@@ -1691,12 +1729,12 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span>  col.names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Competitiveness Group"</span>, <span class='st'>"Average Vote Margin"</span>, <span class='st'>"SD of Vote Margin"</span>, <span class='st'>"Number of States"</span><span class='op'>)</span></span>
 <span><span class='op'>)</span></span></code></pre>
 </div>
-<table style="width:100%;">
+<table>
 <colgroup>
-<col style="width: 28%" />
+<col style="width: 29%" />
 <col style="width: 25%" />
 <col style="width: 23%" />
-<col style="width: 22%" />
+<col style="width: 21%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1708,29 +1746,26 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Highly Competitive</td>
-<td style="text-align: right;">1.82</td>
-<td style="text-align: right;">1.38</td>
-<td style="text-align: right;">10</td>
+<td style="text-align: left;">Battleground State</td>
+<td style="text-align: right;">4.51</td>
+<td style="text-align: right;">3.55</td>
+<td style="text-align: right;">15</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Less Competitive</td>
-<td style="text-align: right;">21.61</td>
-<td style="text-align: right;">14.22</td>
-<td style="text-align: right;">49</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">NA</td>
-<td style="text-align: right;">NaN</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">2</td>
+<td style="text-align: left;">Non-Battleground State</td>
+<td style="text-align: right;">22.95</td>
+<td style="text-align: right;">14.46</td>
+<td style="text-align: right;">46</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>The results show a strong relationship between a state’s partisan competitiveness and how close the vote was in that state. Highly competitive states have much smaller vote margins (about 1.82 percentage points), which is proof of very close elections. In contrast, less competitive states have much larger vote margins (about 21.61 percentage points). Elections in these states are much less close.</p>
-<p>This is reinforced in the scatter plot- competitive (battleground) states are clustered by the 0 vote margin while non-competitive states (non-battleground states) are spread out and have larger margins.</p>
-<p>The results show that higher partisan competitiveness is strongly associated with closer election results!</p>
+<p>There is a strong relationship between a state’s partisan competitiveness and how close the vote was in each state. This is evident across each of the visualizations and statistical analyses I have provided. The box plot shows that battleground states have a lower median vote margin and a tighter distribution, and non-battleground states have a higher median and a wider spread. This shows that elections are closer in battleground states, and they are also more consistent in their closeness compared to non-battleground states.
+This is reinforced by the scatter plot. In the scatter plot, the battleground states are clustered at lower vote margins, which indicates consistently close elections. Non-battleground states show much larger and more dispersed vote margins, just like the findings shown in the box plot.
+The summary statistics reinforce this, as well. Battleground states have much smaller vote margins (about 1.82 percentage points), which is proof of very close elections. In contrast, non-battleground states have much larger vote margins (about 21.61 percentage points). Elections in these states are much less close. Also, the standard deviation of vote margins is a lot smaller in battleground states (1.38) than in non-battleground states (14.22), showing that vote margins are smaller and less variable in battleground states.
+The regression results also support this. The estimated coefficient (main coefficient of interest) for non-battleground states is 18.44. This means that, on average, vote margins in non-battleground states are about 18.4 percentage points higher than in battleground states. This coefficient is highly statistically significant because the p value (9.48e-06) is much smaller than 0.05. Because of this, we can reject the null hypothesis that there is not a relationship between state competitiveness and vote margin in each state. There is a relationship- and it is unlikely to be due to random chance. However, this relationship should not be interpreted as causal. The measure of competitiveness is formed directly from the vote margin, so the two variables are closely related. There are also other factors that influence both competitiveness and vote margins. These are the confounding variables- demographics (population composition, if the state is majority urban/rural) and campaign strategy (campaign spending, candidate attention) being two of them. While the analysis shows a very strong association between the two variables, it doesn’t prove that competitiveness causes closer election results.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Overall, the results show strong support for my hypothesis that more partisan competitive states have closer election outcomes. Throughout the visualizations, regression analysis, and summary statistics, battleground states consistently show much smaller vote margins than non-battleground states. But, there are limitations to this analysis. Competitiveness is only defined using the vote margin, and this limits causal interpretation. Additionally, there are confounders that are not accounted for (state partisanship, demographics, and campaign activity), and these most likely influence both competitiveness and election outcomes. If I had more time to find more data and more money, I could improve my analysis by using something independent of competitiveness (like polling surveys or voting patterns of the past) or I could try to find data from multiple election cycles. I could also try to control for some of the confounding variables to better show the relationship of interest.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->

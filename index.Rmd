@@ -24,7 +24,7 @@ The explanatory variable is partisan competitiveness (measured by the number of 
 
 My hypothesis would be proven correct if the more competitive states showed a smaller vote margin. My hypothesis would be disproven if there was no clear correlation between competitiveness ratings and vote margin, or if competitive states showed large margins and safe states showed close outcomes. To determine if a state is competitive or safe, I will do research on what the states were predicted to be going into the 2020 election, and I will compare that research with the voting outcomes in the chart. 
 
-Below, I have loaded the data and produced a plot that summarizes the vote margin! 
+Below, I have loaded the data, cleaned it, and produced a plot that summarizes the vote margin! 
 
 
 ```{r}
@@ -33,21 +33,6 @@ electoral <- read_csv("data/electoral_data.csv", show_col_types = FALSE)
 electoral
 ```
 
-```{r}
-library(tidyverse)
-
-ggplot(electoral_clean, aes(x = vote_margin)) +
-  geom_histogram(binwidth = 5, fill = "steelblue", color = "white") +
-  labs(
-    x = "Vote Margin (%)",
-    y = "Number of States",
-    title = "Distribution of Vote Margins Across States (2024 Election)"
-  )
-```
-
-## Results 
-
-First, I am cleaning up my data. 
 
 ```{r}
 library(tidyverse)
@@ -67,7 +52,23 @@ electoral_clean <- electoral |>
 electoral_clean
 ```
 
-Next, I made a boxplot to show the relationship between the state competitiveness and popular vote margin in each state. 
+
+
+```{r}
+library(tidyverse)
+
+ggplot(electoral_clean, aes(x = vote_margin)) +
+  geom_histogram(binwidth = 5, fill = "steelblue", color = "white") +
+  labs(
+    x = "Vote Margin (%)",
+    y = "Number of States",
+    title = "Distribution of Vote Margins Across States (2024 Election)"
+  )
+```
+
+## Results 
+
+First, I made a boxplot to show the relationship between the state competitiveness and popular vote margin in each state. 
 
 ```{r}
 ggplot(electoral_clean, aes(x = competitiveness, y = vote_margin, fill = competitiveness)) +
