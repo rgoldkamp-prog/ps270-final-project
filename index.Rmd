@@ -9,11 +9,23 @@ output:
 
 
 
-## Project thoughts
+## Introduction
 
-I'm interested in exploring data related to how a state's partisan competitiveness influences its distribution of electoral votes. I will use data from the 2020 election (Donald Trump vs. Joe Biden), as this data is recent enough to be relevant but also not too recent that there isn't data on it. 
+My project shows the relationship between a state's partisan competitiveness and how close the election outcomes are in that state. My research question is: How does a state's partisan competitiveness relate to how close the vote is in that state? My hypothesis is that states that are more competitive (Battleground States or states that are "toss-ups") will have smaller popular vote margins, and states that are considered "safe" will have larger popular vote margins. Usually, when voters are more evenly divided between different political parties, the election outcomes will be closer and vice versa. However, this isn't always the case. Some states are labeled as competitive before the election, but the results prove that there is a large margin in between candidates. 
 
-UPDATE: Based on the dataset I have found, I have changed my initial project thoughts. Instead of tying in the electoral votes, I will be researching how partisan competitiveness affects the vote margins for each state. 
+This data topic is interesting and relevant because it helps explain how political competition varies across states, and how this can impact election outcomes. In today's current state of polarization, it's interesting to see how competitiveness relates to vote margins. 
+
+
+## Data 
+
+The data that I used for my analysis comes from the presidential election results from the 2024 election. The key dependent variable (outcome) is the vote margin. This is measured as the difference in vote share between the Democratic and Republican candidates in each individual state for the 2024 presidential election. We can derive this variable from the official election results (instead of a survey or a statistical model). Smaller vote margins are indicative of closer elections, and larger vote margins are indicative of elections that were not very competitive. The key independent variable (predictor) is partisan competitiveness. This is shown by classifying states into two different categories: battleground states (very competitive) and non-battleground states (less competitive). We will be able to tell if a state is a battleground state or a non-battleground state based on the vote margin (states with a vote margin of less than 5 percentage points are considered very competitive and states with a margin larger than 5 are considered less competitive). We can derive this variable from research based on the official election results, as well. 
+
+The explanatory variable is partisan competitiveness (measured by the number of votes for each candidate) and outcome variable of interest is the vote margin (measured by the difference in vote share between each candidate). 
+
+My hypothesis would be proven correct if the more competitive states showed a smaller vote margin. My hypothesis would be disproven if there was no clear correlation between competitiveness ratings and vote margin, or if competitive states showed large margins and safe states showed close outcomes. To determine if a state is competitive or safe, I will do research on what the states were predicted to be going into the 2020 election, and I will compare that research with the voting outcomes in the chart. 
+
+Below, I have loaded the data and produced a plot that summarizes the vote margin! 
+
 
 ```{r}
 library(tidyverse)
@@ -21,11 +33,21 @@ electoral <- read_csv("data/electoral_data.csv", show_col_types = FALSE)
 electoral
 ```
 
-## Research Question, Hypothesis, Explanatory Variables, Etc. 
+```{r}
+library(tidyverse)
 
-My research question is: How does a state's partisan competitiveness relate to how close the vote is in that state? My hypothesis is that states that are more competitive (Battleground States or states that are "toss-ups") will have smaller popular vote margins, and states that are considered "safe" will have larger popular vote margins. Usually, when voters are more evenly divided between different political parties, the election outcomes will be closer and vice versa. However, this isn't always the case. Some states are labeled as competitive before the election, but the results prove that there is a large margin in between candidates. The explanatory variable is partisan competitiveness (measured by the number of votes for each candidate) and outcome variable of interest is the popular vote margin (measured by the difference in vote share between each candidate). My hypothesis would be proven correct if the more competitive states showed a smaller vote margin. My hypothesis would be disproven if there was no clear correlation between competitiveness ratings and vote margin, or if competitive states showed large margins and safe states showed close outcomes. To determine if a state is competitive or safe, I will do research on what the states were predicted to be going into the 2020 election, and I will compare that research with the voting outcomes in the chart. 
+ggplot(electoral_clean, aes(x = vote_margin)) +
+  geom_histogram(binwidth = 5, fill = "steelblue", color = "white") +
+  labs(
+    x = "Vote Margin (%)",
+    y = "Number of States",
+    title = "Distribution of Vote Margins Across States (2024 Election)"
+  )
+```
 
-## Data Cleaning: Measuring how close the election was in each state and classifying states that were close races as Battleground States and classifying states that were not close as Non-Battleground States; also creating a new vote margin variable to see how close each race was 
+## Results 
+
+First, I am cleaning up my data. 
 
 ```{r}
 library(tidyverse)
@@ -45,7 +67,7 @@ electoral_clean <- electoral |>
 electoral_clean
 ```
 
-## Attempting to Make a Graph for Data Visualization 
+Next, I made a boxplot to show the relationship between the state competitiveness and popular vote margin in each state. 
 
 ```{r}
 ggplot(electoral_clean, aes (x= competitiveness, y = vote_margin)) + 
@@ -56,8 +78,18 @@ ggplot(electoral_clean, aes (x= competitiveness, y = vote_margin)) +
     y = "Popular Vote Margin (percentage points)"
   )
 ```
+Next, I ran a regression to show the relationship between partisan competitiveness and vote margin. 
 
-## Visualization and Analysis to Answer Research Question (Checkpoint 4)
+```{r}
+library(knitr)
+electoral_clean <- electoral_clean %>%
+  mutate(competitiveness = as.factor(competitiveness))
+
+model <- lm(vote_margin ~ competitiveness, data = electoral_clean)
+summary(model)
+```
+
+Next, I made a scatter plot to show the relationship between partisan competitiveness and vote margin. 
 
 ```{r}
 library(tidyverse)
@@ -72,6 +104,8 @@ ggplot(electoral_clean, aes(x = competitiveness, y = vote_margin)) +
   )
 electoral_clean
 ```
+
+Next, I summarized the vote margins across states by their levels of partisan competitiveness in terms of percentage points and standard deviation.
 
 ```{r}
 library(tidyverse)
