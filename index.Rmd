@@ -70,58 +70,70 @@ electoral_clean
 Next, I made a boxplot to show the relationship between the state competitiveness and popular vote margin in each state. 
 
 ```{r}
-ggplot(electoral_clean, aes (x= competitiveness, y = vote_margin)) + 
-  geom_boxplot(alpha = 0.8, width = 0.6) +
+ggplot(electoral_clean, aes(x = competitiveness, y = vote_margin, fill = competitiveness)) +
+  geom_boxplot(alpha = 0.7, width = 0.6) +
+  scale_fill_manual(values = c("steelblue", "orange")) +
   labs(
-    title = "Vote Margins in Battleground vs. Non-Battleground States",
+    title = "Vote Margins by State Competitiveness",
+    subtitle = "2024 Presidential Election",
     x = "State Competitiveness",
-    y = "Popular Vote Margin (percentage points)"
+    y = "Vote Margin (%)"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 14, face = "bold"),
+    legend.position = "none"
   )
 ```
+
 Next, I ran a regression to show the relationship between partisan competitiveness and vote margin. 
 
 ```{r}
 library(knitr)
-electoral_clean <- electoral_clean %>%
+electoral_clean <- electoral_clean |>
   mutate(competitiveness = as.factor(competitiveness))
 
 model <- lm(vote_margin ~ competitiveness, data = electoral_clean)
 summary(model)
 ```
 
+
 Next, I made a scatter plot to show the relationship between partisan competitiveness and vote margin. 
 
 ```{r}
 library(tidyverse)
 
-ggplot(electoral_clean, aes(x = competitiveness, y = vote_margin)) +
-  geom_point(alpha = 0.7) +
-  geom_smooth(method = "lm", se = FALSE) +
+ggplot(electoral_clean, aes(x = competitiveness, y = vote_margin, color = competitiveness)) +
+  geom_jitter(width = 0.2, alpha = 0.7, size = 2) +  
+  stat_summary(fun = mean, geom = "point", size = 4, color = "black") +  
+  scale_color_manual(values = c("steelblue", "orange")) +
   labs(
-    x = "Partisan Competitiveness",
-    y = "Vote Margin (%)",
-    title = "Relationship Between State Competitiveness and Election Closeness"
+    title = "Vote Margins by State Competitiveness",
+    subtitle = "2024 Presidential Election",
+    x = "State Competitiveness",
+    y = "Vote Margin (%)"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 14, face = "bold"),
+    plot.subtitle = element_text(size = 11),
+    legend.position = "none"
   )
-electoral_clean
 ```
 
-Next, I summarized the vote margins across states by their levels of partisan competitiveness in terms of percentage points and standard deviation.
+
+Finally, I summarized the vote margins across states by their levels of partisan competitiveness in terms of percentage points and standard deviation.
 
 ```{r}
 library(tidyverse)
 library(knitr)
 
-electoral_clean <- electoral_clean |>
-  mutate(
-    comp_group = if_else(vote_margin < 5, "Highly Competitive", "Less Competitive")
-  )
-
 summary_table <- electoral_clean |>
-  group_by(comp_group) |>
+  group_by(competitiveness) |>
   summarize(
     avg_margin = mean(vote_margin, na.rm = TRUE),
     sd_margin = sd(vote_margin, na.rm = TRUE),
-    n_states = n ()
+    n_states = n()
   )
 
 kable(
@@ -131,11 +143,16 @@ kable(
 )
 ```
 
-The results show a strong relationship between a state's partisan competitiveness and how close the vote was in that state. Highly competitive states have much smaller vote margins (about 1.82 percentage points), which is proof of very close elections. In contrast, less competitive states have much larger vote margins (about 21.61 percentage points). Elections in these states are much less close. 
 
-This is reinforced in the scatter plot- competitive (battleground) states are clustered by the 0 vote margin while non-competitive states (non-battleground states) are spread out and have larger margins. 
+There is a strong relationship between a state's partisan competitiveness and how close the vote was in each state. This is evident across each of the visualizations and statistical analyses I have provided. The box plot shows that battleground states have a lower median vote margin and a tighter distribution, and non-battleground states have a higher median and a wider spread. This shows that elections are closer in battleground states, and they are also more consistent in their closeness compared to non-battleground states. 
+This is reinforced by the scatter plot. In the scatter plot, the battleground states are clustered at lower vote margins, which indicates consistently close elections. Non-battleground states show much larger and more dispersed vote margins, just like the findings shown in the box plot. 
+The summary statistics reinforce this, as well. Battleground states have much smaller vote margins (about 1.82 percentage points), which is proof of very close elections. In contrast, non-battleground states have much larger vote margins (about 21.61 percentage points). Elections in these states are much less close. Also, the standard deviation of vote margins is a lot smaller in battleground states (1.38) than in non-battleground states (14.22), showing that vote margins are smaller and less variable in battleground states. 
+The regression results also support this. The estimated coefficient (main coefficient of interest) for non-battleground states is 18.44. This means that, on average, vote margins in non-battleground states are about 18.4 percentage points higher than in battleground states. This coefficient is highly statistically significant because the p value (9.48e-06) is much smaller than 0.05. Because of this, we can reject the null hypothesis that there is not a relationship between state competitiveness and vote margin in each state. There is a relationship- and it is unlikely to be due to random chance. However, this relationship should not be interpreted as causal. The measure of competitiveness is formed directly from the vote margin, so the two variables are closely related. There are also other factors that influence both competitiveness and vote margins. These are the confounding variables- demographics (population composition, if the state is majority urban/rural) and campaign strategy (campaign spending, candidate attention) being two of them. While the analysis shows a very strong association between the two variables, it doesn't prove that competitiveness causes closer election results. 
 
-The results show that higher partisan competitiveness is strongly associated with closer election results!
+
+## Conclusion 
+
+Overall, the results show strong support for my hypothesis that more partisan competitive states have closer election outcomes. Throughout the visualizations, regression analysis, and summary statistics, battleground states consistently show much smaller vote margins than non-battleground states. But, there are limitations to this analysis. Competitiveness is only defined using the vote margin, and this limits causal interpretation. Additionally, there are confounders that are not accounted for (state partisanship, demographics, and campaign activity), and these most likely influence both competitiveness and election outcomes. If I had more time to find more data and more money, I could improve my analysis by using something independent of competitiveness (like polling surveys or voting patterns of the past) or I could try to find data from multiple election cycles. I could also try to control for some of the confounding variables to better show the relationship of interest. 
 
 
 
