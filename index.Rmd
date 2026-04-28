@@ -1,7 +1,7 @@
 ---
-title: "PS270 Final Project"
+title: "Voting Behavior in Battleground vs. Non Battleground States"
 author: "Ruth Goldkamp"
-description: "My final project"
+description: "How does a state's partisan competitiveness relate to how close the vote is in that state?"
 output:
   distill::distill_article:
     self_contained: false
@@ -27,14 +27,14 @@ My hypothesis would be proven correct if the more competitive states showed a sm
 Below, I have loaded the data, cleaned it, and produced a plot that summarizes the vote margin! 
 
 
-```{r}
+```{r, echo = FALSE}
 library(tidyverse)
 electoral <- read_csv("data/electoral_data.csv", show_col_types = FALSE)
 electoral
 ```
 
 
-```{r}
+```{r, echo = FALSE}
 library(tidyverse)
 electoral <- read_csv("data/electoral_data.csv", show_col_types = FALSE)
 battleground_states <- c( "Arizona", "Florida", "Georgia", "Iowa", "Michigan",
@@ -54,7 +54,7 @@ electoral_clean
 
 
 
-```{r}
+```{r, echo = FALSE}
 library(tidyverse)
 
 ggplot(electoral_clean, aes(x = vote_margin)) +
@@ -70,7 +70,7 @@ ggplot(electoral_clean, aes(x = vote_margin)) +
 
 First, I made a boxplot to show the relationship between the state competitiveness and popular vote margin in each state. 
 
-```{r}
+```{r, echo = FALSE}
 ggplot(electoral_clean, aes(x = competitiveness, y = vote_margin, fill = competitiveness)) +
   geom_boxplot(alpha = 0.7, width = 0.6) +
   scale_fill_manual(values = c("steelblue", "orange")) +
@@ -89,7 +89,7 @@ ggplot(electoral_clean, aes(x = competitiveness, y = vote_margin, fill = competi
 
 Next, I ran a regression to show the relationship between partisan competitiveness and vote margin. 
 
-```{r}
+```{r, echo = FALSE}
 library(knitr)
 electoral_clean <- electoral_clean |>
   mutate(competitiveness = as.factor(competitiveness))
@@ -101,7 +101,7 @@ summary(model)
 
 Next, I made a scatter plot to show the relationship between partisan competitiveness and vote margin. 
 
-```{r}
+```{r, echo = FALSE}
 library(tidyverse)
 
 ggplot(electoral_clean, aes(x = competitiveness, y = vote_margin, color = competitiveness)) +
@@ -125,7 +125,7 @@ ggplot(electoral_clean, aes(x = competitiveness, y = vote_margin, color = compet
 
 Finally, I summarized the vote margins across states by their levels of partisan competitiveness in terms of percentage points and standard deviation.
 
-```{r}
+```{r, echo = FALSE}
 library(tidyverse)
 library(knitr)
 
@@ -155,6 +155,7 @@ The regression results also support this. The estimated coefficient (main coeffi
 
 Overall, the results show strong support for my hypothesis that more partisan competitive states have closer election outcomes. Throughout the visualizations, regression analysis, and summary statistics, battleground states consistently show much smaller vote margins than non-battleground states. But, there are limitations to this analysis. Competitiveness is only defined using the vote margin, and this limits causal interpretation. Additionally, there are confounders that are not accounted for (state partisanship, demographics, and campaign activity), and these most likely influence both competitiveness and election outcomes. If I had more time to find more data and more money, I could improve my analysis by using something independent of competitiveness (like polling surveys or voting patterns of the past) or I could try to find data from multiple election cycles. I could also try to control for some of the confounding variables to better show the relationship of interest!  
 
-
+```{r print-code, ref.label=knitr::all_labels(), echo = TRUE, eval=FALSE}
+```
 
 
